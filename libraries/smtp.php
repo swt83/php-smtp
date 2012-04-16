@@ -151,30 +151,37 @@ class SMTP
 		$this->connection = fsockopen($this->host, $this->port, $errno, $errstr, $this->timeout);
 		if ($this->code() !== 220) return false;
 		
-		// authenticate
+		// send helo
 		fputs($this->connection, 'HELO '.$this->localhost.$this->newline);
 		$this->status();
 		
-		// initiate tls protocol
+		// if tls required...
 		if($this->secure === 'tls')
 		{
+			// send starttls
 			fputs($this->connection, 'STARTTLS'.$this->newline);
 			if ($this->code() !== 220) return false;
 			
+			// enable crypto
 			stream_socket_enable_crypto($this->connection, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
 			
+			// send helo
 			fputs($this->connection, 'HELO '.$this->localhost.$this->newline);
 			if ($this->code() !== 250) return false;
 		}
 		
+		// if not localhost...
 		if($this->host !== 'localhost')
 		{
+			// send auth login
 			fputs($this->connection, 'AUTH LOGIN'.$this->newline);
 			if ($this->code() !== 334) return false;
 			
+			// send username
 			fputs($this->connection, base64_encode($this->user).$this->newline);
 			if ($this->code() !== 334) return false;
 			
+			// send password
 			fputs($this->connection, base64_encode($this->pass).$this->newline);
 			if ($this->code() !== 235) return false;
 		}
@@ -284,11 +291,11 @@ class SMTP
 	
 	private function smtp_deliver()
 	{
-		// transmit sender info
+		// send mailfrom
 		fputs($this->connection, 'MAIL FROM: <'. $this->from['email'] .'>'.$this->newline);
 		$this->status();
 		
-		// transmit recipients info
+		// send rcptto
 		$recipients = $this->to + $this->cc + $this->bcc;
 		foreach ($recipients as $r)
 		{
@@ -296,11 +303,11 @@ class SMTP
 			$this->status();
 		}
 		
-		// prepare to transmit email
+		// send data
 		fputs($this->connection, 'DATA'.$this->newline);
 		$this->status();
 		
-		// transmit email
+		// send headers
 		fputs($this->connection, $this->smtp_construct());
 		if ($this->code() === 250)
 		{
@@ -314,7 +321,7 @@ class SMTP
 	
 	public function smtp_disconnect()
 	{
-		// transmit quit signal
+		// send quit
 		fputs($this->connection, 'QUIT'.$this->newline);
 		$this->status();
 		
@@ -347,6 +354,7 @@ class SMTP
 	
 	private function format($recipient)
 	{
+		// format name <email>
 		if ($recipient['name'])
 		{
 			return $recipient['name'].' <'.$recipient['email'].'>';
