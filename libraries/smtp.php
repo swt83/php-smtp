@@ -96,7 +96,7 @@ class SMTP
 	
 	public function text($text)
 	{
-		$this->text = wordwrap($text, strip_tags($this->wordwrap));
+		$this->text = wordwrap(strip_tags($text), $this->wordwrap);
 	}
 	
 	public function subject($subject)
