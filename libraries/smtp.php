@@ -11,20 +11,13 @@
 
 class SMTP
 {
-	// headers
-	private $newline = "\r\n";
-	private $charset = 'UTF-8';
-	private $encoding = '7bit';
-	private $wordwrap = 70;
-	private $text_mode = false;
-
 	// connection
 	private $connection;
 	private $localhost = 'localhost';
 	private $timeout = 30;
 	private $debug_mode = false;
 
-	// authentication
+	// auth
 	private $host;
 	private $port;
 	private $secure; // null, ssl, or tls
@@ -40,6 +33,13 @@ class SMTP
 	private $text;
 	private $subject;
 	private $attachments = array();
+	
+	// misc
+	private $charset = 'UTF-8';
+	private $newline = "\r\n";
+	private $encoding = '7bit';
+	private $wordwrap = 70;
+	private $text_mode = false;
 
 	public function __construct()
 	{
