@@ -42,6 +42,10 @@ You can send text-only emails:
 $result = $mail->send_text();
 ```
 
+## Debug Mode ##
+
+In the config you can flag ``'debug_mode' = true;``, which can be helpful in testing your SMTP connections.  It will echo server reponses from each step in the email sending process.
+
 ## Limitations ##
 
 Below are some current limitations, which are things I hope to fix w/ time.  Please feel free to contribute to this ongoing project!

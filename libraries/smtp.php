@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A LaravelPHP package for working w/ SMTP.
+ * A new SMTP class built from scatch.
  *
  * @package    SMTP
  * @author     Scott Travis <scott.w.travis@gmail.com>
