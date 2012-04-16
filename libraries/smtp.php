@@ -15,6 +15,7 @@ class SMTP
 	private $newline = "\r\n";
 	private $charset = 'UTF-8';
 	private $encoding = '7bit';
+	private $wordwrap = 70;
 	private $text_mode = false;
 
 	// connection
@@ -95,7 +96,7 @@ class SMTP
 	
 	public function text($text)
 	{
-		$this->text = $text;
+		$this->text = wordwrap($text, $this->wordwrap);
 	}
 	
 	public function subject($subject)
@@ -248,7 +249,9 @@ class SMTP
 		else
 		{
 			/*
-			// for working w/ attachments
+			
+			// my notes for doing attachments
+			
 			$file = $path.$filename;
 			$file_size = filesize($file);
 			$handle = fopen($file, "r");
@@ -258,10 +261,10 @@ class SMTP
 			$uid = md5(uniqid(time()));
 			$name = basename($file);
 			$headers[] = '--'.$boundary;
-			$this->headers .= "Content-Type: application/octet-stream; name=\"".$filename."\"\r\n"; // use different content types here
-			$this->headers .= "Content-Transfer-Encoding: base64\r\n";
-			$this->headers .= "Content-Disposition: attachment; filename=\"".$filename."\"\r\n\r\n";
-			#$this->headers .= $content."\r\n\r\n";
+			$headers[] = "Content-Type: application/octet-stream; name=\"".$filename."\"\r\n"; // use different content types here
+			$headers[]= "Content-Transfer-Encoding: base64\r\n";
+			$headers[]= "Content-Disposition: attachment; filename=\"".$filename."\"\r\n\r\n";
+			$headers[]= $content."\r\n\r\n";
 			*/	
 		}
 		
@@ -274,9 +277,6 @@ class SMTP
 		{
 			$email .= $header.$this->newline;
 		}
-		
-		// for debug purposes
-		echo '<pre style="background:#eee;">'.$email.'</pre>';
 		
 		// return
 		return $email;

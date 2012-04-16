@@ -1,6 +1,6 @@
 # SMTP for LaravelPHP #
 
-This package is a new SMTP class written from scratch.  Many of the existing email libraries are old, bloated, not on GitHub, and worst of all written in camelcase.  I wanted something short and simple.
+This package is a new SMTP class built from scratch.  Many of the existing email libraries are old, bloated, not on GitHub, and worst of all written in camelcase.  I wanted something short and simple.
 
 ## Install ##
 
@@ -21,26 +21,26 @@ $result = $mail->send();
 
 You can add multiple recipients:
 
-``php
+```php
 $mail->to('person1@foobar.com');
 $mail->to('person2@foobar.com');
 $mail->cc('person3@foobar.com');
 $mail->cc('person4@foobar.com');
 $mail->bcc('person5@foobar.com');
 $mail->bcc('person6@foobar.com');
-``
+```
 
 You can assign a text version of your email:
 
-``php
+```php
 $mail->text('Text version of my email, cool.');
-``
+```
 
 You can send text-only emails:
 
-``php
+```php
 $result = $mail->send_text();
-``
+```
 
 ## Limitations ##
 
