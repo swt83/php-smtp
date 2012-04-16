@@ -75,7 +75,7 @@ class SMTP
 	
 	public function cc($email, $name = null)
 	{
-		$this->cc = array(
+		$this->cc[] = array(
 			'email' => $email,
 			'name' => $name ? $name : '',
 		);
@@ -83,7 +83,7 @@ class SMTP
 	
 	public function bcc($email, $name = null)
 	{
-		$this->bcc = array(
+		$this->bcc[] = array(
 			'email' => $email,
 			'name' => $name ? $name : '',
 		);
