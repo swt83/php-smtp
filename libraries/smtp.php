@@ -106,7 +106,7 @@ class SMTP
 	
 	public function attach($path)
 	{
-		
+		// not built yet
 	}
 	
 	public function send_text()
@@ -332,18 +332,18 @@ class SMTP
 	private function status()
 	{
 		// get response
-		$data = '';
+		$response = '';
 		while ($str = fgets($this->connection, 4096))
 		{
-			$data .= $str;
+			$response .= $str;
 			if (substr($str, 3, 1) === ' ') break;
 		}
 		
 		// report
-		if ($this->debug_mode) echo '<pre>'.$data.'</pre>';
+		if ($this->debug_mode) echo '<code>'.$response.'</code><br/>';
 		
 		// return
-		return $data;
+		return $response;
 	}
 	
 	private function code()

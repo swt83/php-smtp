@@ -55,6 +55,7 @@ In the config you can flag ``'debug_mode' = true;``, which can be helpful in tes
 
 Below are some current limitations, which are things I hope to fix w/ time.  Please feel free to contribute to this ongoing project!
 
+* Does not support priority level.
 * Does not support attachments.
 * Does not support encryption.
 * Does not support alternate encoding types.
