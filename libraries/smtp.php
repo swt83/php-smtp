@@ -96,7 +96,7 @@ class SMTP
 	
 	public function text($text)
 	{
-		$this->text = wordwrap($text, $this->wordwrap);
+		$this->text = wordwrap($text, strip_tags($this->wordwrap));
 	}
 	
 	public function subject($subject)
@@ -319,7 +319,7 @@ class SMTP
 		}
 	}
 	
-	public function smtp_disconnect()
+	private function smtp_disconnect()
 	{
 		// send quit
 		fputs($this->connection, 'QUIT'.$this->newline);
@@ -354,7 +354,7 @@ class SMTP
 	
 	private function format($recipient)
 	{
-		// format name <email>
+		// format "name <email>"
 		if ($recipient['name'])
 		{
 			return $recipient['name'].' <'.$recipient['email'].'>';
