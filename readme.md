@@ -22,10 +22,15 @@ $result = $mail->send();
 You can add multiple recipients:
 
 ```php
+// add to
 $mail->to('person1@foobar.com');
 $mail->to('person2@foobar.com');
+
+// add cc
 $mail->cc('person3@foobar.com');
 $mail->cc('person4@foobar.com');
+
+// add bcc
 $mail->bcc('person5@foobar.com');
 $mail->bcc('person6@foobar.com');
 ```
