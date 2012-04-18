@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A new SMTP class built from scatch.
+ * A simple SMTP class with a fresh start.
  *
  * @package    SMTP
  * @author     Scott Travis <scott.w.travis@gmail.com>
