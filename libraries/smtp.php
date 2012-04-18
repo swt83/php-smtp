@@ -106,7 +106,7 @@ class SMTP
 	
 	public function attach($path)
 	{
-		// not built yet
+		$this->attachments[] = $path;
 	}
 	
 	public function send_text()
@@ -221,7 +221,7 @@ class SMTP
 		// add email content
 		if (empty($this->attachments))
 		{
-			if ($this->text_mode === true)
+			if ($this->text_mode)
 			{
 				// add text
 				$headers[] = 'Content-Type: text/plain; charset="'.$this->charset.'"';
@@ -255,24 +255,49 @@ class SMTP
 		}
 		else
 		{
-			/*
-			
-			// my notes for doing attachments
-			
-			$file = $path.$filename;
-			$file_size = filesize($file);
-			$handle = fopen($file, "r");
-			$content = fread($handle, $file_size);
-			fclose($handle);
-			$content = chunk_split(base64_encode($content));
-			$uid = md5(uniqid(time()));
-			$name = basename($file);
+			// add multipart
+			$headers[] = 'MIME-Version: 1.0';
+			$headers[] = 'Content-Type: multipart/mixed; boundary="'.$boundary.'"';
+			$headers[] = '';
+			$headers[] = 'This is a multi-part message in MIME format.';
 			$headers[] = '--'.$boundary;
-			$headers[] = "Content-Type: application/octet-stream; name=\"".$filename."\"\r\n"; // use different content types here
-			$headers[]= "Content-Transfer-Encoding: base64\r\n";
-			$headers[]= "Content-Disposition: attachment; filename=\"".$filename."\"\r\n\r\n";
-			$headers[]= $content."\r\n\r\n";
-			*/	
+			
+			// add text
+			$headers[] = 'Content-Type: text/plain; charset="'.$this->charset.'"';
+			$headers[] = 'Content-Transfer-Encoding: '.$this->encoding;
+			$headers[] = '';
+			$headers[] = $this->text;
+			$headers[] = '--'.$boundary;
+			
+			// if NOT text mode...
+			if (!$this->text_mode)
+			{
+				// add html
+				$headers[] = 'Content-Type: text/html; charset="'.$this->charset.'"';
+				$headers[] = 'Content-Transfer-Encoding: '.$this->encoding;
+				$headers[] = '';
+				$headers[] = $this->body;
+				$headers[] = '--'.$boundary;
+			}
+			
+			// spin thru attachments...		
+			foreach ($this->attachments as $attachment)
+			{
+				// compile attachment
+				$file_path = $attachment;
+				$file_contents = chunk_split(base64_encode(file_get_contents($file_path)));
+				
+				// add attachment
+				$headers[] = 'Content-Type: application/octet-stream; name="'.basename($file_path).'"'; // use different content types here
+				$headers[] = 'Content-Transfer-Encoding: base64';
+				$headers[] = 'Content-Disposition: attachment';
+				$headers[] = '';
+				$headers[] = $file_contents;
+				$headers[] = '--'.$boundary;
+			}
+				
+			// add last "--"
+			$headers[sizeof($headers) - 1] .= '--';
 		}
 		
 		// final period

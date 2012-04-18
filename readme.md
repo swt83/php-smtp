@@ -12,10 +12,10 @@ A normal email would go like this:
 
 ```php
 $mail = new SMTP();
+$mail->to('sally@foobar.com', 'Sally Mae');
 $mail->from('john@foobar.com', 'John Doe');
 $mail->subject('Test Email');
 $mail->body('Did <b>this</b> work?');
-$mail->to('sally@foobar.com', 'Sally Mae');
 $result = $mail->send();
 ```
 
@@ -33,6 +33,12 @@ $mail->cc('person4@foobar.com');
 // add bcc
 $mail->bcc('person5@foobar.com');
 $mail->bcc('person6@foobar.com');
+```
+
+You can add attachments:
+
+```php
+$mail->attach('/path/to/file.png');
 ```
 
 You can assign a text version of your email:
@@ -53,10 +59,8 @@ In the config you can flag ``'debug_mode' = true;``, which can be helpful in tes
 
 ## Limitations ##
 
-Below are some current limitations, which are things I hope to fix w/ time.  Please feel free to contribute to this ongoing project!
+Below are some current limitations, which are things I hope to fix w/ time.  Please feel free to contribute to this ongoing project.
 
-* Does not support priority level.
-* Does not support attachments.
 * Does not support encryption.
-* Does not support alternate encoding types.
+* Does not support priority level.
 * Does not keep connection open for spooling email sends.
