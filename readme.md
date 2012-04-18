@@ -12,27 +12,27 @@ A normal email would go like this:
 
 ```php
 $mail = new SMTP();
-$mail->to('sally@foobar.com', 'Sally Mae');
-$mail->from('john@foobar.com', 'John Doe');
-$mail->subject('Test Email');
-$mail->body('Did <b>this</b> work?');
+$mail->to('tim@gmail.com');
+$mail->from('paul@gmail.com', 'Paul T.');
+$mail->subject('Hello World');
+$mail->body('This is a <b>HTML</b> email.');
 $result = $mail->send();
 ```
 
-You can add multiple recipients:
+You can add multiple recipients, name is optional:
 
 ```php
 // add to
-$mail->to('person1@foobar.com');
-$mail->to('person2@foobar.com');
+$mail->to('matthew@gmail.com');
+$mail->to('mark@gmail.com');
 
 // add cc
-$mail->cc('person3@foobar.com');
-$mail->cc('person4@foobar.com');
+$mail->cc('luke@gmail.com');
+$mail->cc('john@gmail.com');
 
 // add bcc
-$mail->bcc('person5@foobar.com');
-$mail->bcc('person6@foobar.com');
+$mail->bcc('james@gmail.com');
+$mail->bcc('peter@gmail.com');
 ```
 
 You can add attachments:
@@ -44,7 +44,7 @@ $mail->attach('/path/to/file.png');
 You can assign a text version of your email:
 
 ```php
-$mail->text('Text version of my email, cool.');
+$mail->text('This is a text email.');
 ```
 
 You can send text-only emails:
@@ -55,11 +55,11 @@ $result = $mail->send_text();
 
 ## Debug Mode ##
 
-In the config you can flag ``'debug_mode' = true;``, which can be helpful in testing your SMTP connections.  It will echo server reponses from each step in the email sending process.
+In the config you can flag ``'debug_mode' = true;``, which can be helpful in testing your SMTP connections.  It will echo server responses from each step in the email sending process.
 
 ## Limitations ##
 
-Below are some current limitations, which are things I hope to fix w/ time.  Please feel free to contribute to this ongoing project.
+Below are some current limitations.  Please feel free to contribute to this ongoing project.
 
 * Does not support encryption.
 * Does not support priority level.
