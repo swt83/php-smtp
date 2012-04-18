@@ -61,7 +61,7 @@ class SMTP
 	{
 		$this->from = array(
 			'email' => $email,
-			'name' => $name ? $name : '',
+			'name' => $name,
 		);
 	}
 	
@@ -69,7 +69,7 @@ class SMTP
 	{
 		$this->to[] = array(
 			'email' => $email,
-			'name' => $name ? $name : '',
+			'name' => $name,
 		);
 	}
 	
@@ -77,7 +77,7 @@ class SMTP
 	{
 		$this->cc[] = array(
 			'email' => $email,
-			'name' => $name ? $name : '',
+			'name' => $name,
 		);
 	}
 	
@@ -85,7 +85,7 @@ class SMTP
 	{
 		$this->bcc[] = array(
 			'email' => $email,
-			'name' => $name ? $name : '',
+			'name' => $name,
 		);
 	}
 	

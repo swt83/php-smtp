@@ -38,7 +38,8 @@ $mail->bcc('peter@gmail.com');
 You can add attachments:
 
 ```php
-$mail->attach('/path/to/file.png');
+$mail->attach('/path/to/file1.png');
+$mail->attach('/path/to/file2.png');
 ```
 
 You can assign a text version of your email:
