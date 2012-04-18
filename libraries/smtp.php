@@ -218,7 +218,7 @@ class SMTP
 			$headers[] = 'CC: '.$string;
 		}
 		
-		// add email content
+		// build email contents
 		if (empty($this->attachments))
 		{
 			if ($this->text_mode)
@@ -269,7 +269,6 @@ class SMTP
 			$headers[] = $this->text;
 			$headers[] = '--'.$boundary;
 			
-			// if NOT text mode...
 			if (!$this->text_mode)
 			{
 				// add html
@@ -281,19 +280,29 @@ class SMTP
 			}
 			
 			// spin thru attachments...		
-			foreach ($this->attachments as $attachment)
+			foreach ($this->attachments as $path)
 			{
-				// compile attachment
-				$file_path = $attachment;
-				$file_contents = chunk_split(base64_encode(file_get_contents($file_path)));
-				
-				// add attachment
-				$headers[] = 'Content-Type: application/octet-stream; name="'.basename($file_path).'"'; // use different content types here
-				$headers[] = 'Content-Transfer-Encoding: base64';
-				$headers[] = 'Content-Disposition: attachment';
-				$headers[] = '';
-				$headers[] = $file_contents;
-				$headers[] = '--'.$boundary;
+				// if file exists...
+				if (file_exists($path))
+				{
+					// open file
+					$contents = @file_get_contents($path);
+					
+					// if accessible...
+					if ($contents)
+					{
+						// encode file contents
+						$contents = chunk_split(base64_encode($contents));
+
+						// add attachment
+						$headers[] = 'Content-Type: application/octet-stream; name="'.basename($path).'"'; // use different content types here
+						$headers[] = 'Content-Transfer-Encoding: base64';
+						$headers[] = 'Content-Disposition: attachment';
+						$headers[] = '';
+						$headers[] = $contents;
+						$headers[] = '--'.$boundary;
+					}
+				}
 			}
 				
 			// add last "--"
