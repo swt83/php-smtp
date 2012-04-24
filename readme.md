@@ -4,7 +4,13 @@ This package is a new SMTP class built from scratch.  Many of the existing email
 
 ## Install ##
 
-Copy the config file to ``application/config/smtp.php`` and input the proper information.
+In ``application/bundles.php`` add:
+
+```php
+'smtp' => array('auto' => true),
+```
+
+Copy the sample config file to ``application/config/smtp.php`` and input the proper information.
 
 ## Usage ##
 
