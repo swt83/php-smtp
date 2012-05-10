@@ -66,7 +66,7 @@ class SMTP
 		);
 	}
 	
-	public function reploy($email, $name = null)
+	public function reply($email, $name = null)
 	{
 		$this->reply = array(
 			'email' => $email,
