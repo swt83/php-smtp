@@ -29,6 +29,7 @@ class SMTP
 	private $cc = array();
 	private $bcc = array();
 	private $from;
+	private $reply;
 	private $body;
 	private $text;
 	private $subject;
@@ -60,6 +61,14 @@ class SMTP
 	public function from($email, $name = null)
 	{
 		$this->from = array(
+			'email' => $email,
+			'name' => $name,
+		);
+	}
+	
+	public function reploy($email, $name = null)
+	{
+		$this->reply = array(
 			'email' => $email,
 			'name' => $name,
 		);
@@ -197,7 +206,7 @@ class SMTP
 		
 		// add from info
 		$headers[] = 'From: '.$this->format($this->from);
-		$headers[] = 'Reply-To: '.$this->format($this->from);
+		$headers[] = 'Reply-To: '.$this->format($this->reply ? $this->reply : $this->from);
 		$headers[] = 'Subject: '.$this->subject;
 		
 		// add to receipients

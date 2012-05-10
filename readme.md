@@ -41,6 +41,12 @@ $mail->bcc('james@gmail.com');
 $mail->bcc('peter@gmail.com');
 ```
 
+You can set a custom reply-to address:
+
+```php
+$mail->reply('paul@gmail.com', 'Paul T.');
+```
+
 You can add attachments:
 
 ```php
