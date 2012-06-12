@@ -23,6 +23,7 @@ class SMTP
 	private $secure; // null, ssl, or tls
 	private $user;
 	private $pass;
+	private $requires_auth = true;
 	
 	// email
 	private $to = array();
@@ -53,6 +54,7 @@ class SMTP
 		$this->secure = $config['secure'];
 		$this->user = $config['user'];
 		$this->pass = $config['pass'];
+		$this->requires_auth = $config['requires_authentication'];
 		
 		// set debug mode
 		$this->debug_mode = $config['debug_mode'];
@@ -161,37 +163,37 @@ class SMTP
 		if ($this->code() !== 220) return false;
 		
 		// send helo
-		fputs($this->connection, 'HELO '.$this->localhost.$this->newline);
+		$this->write($this->connection, 'HELO '.$this->localhost.$this->newline);
 		$this->status();
 		
 		// if tls required...
 		if($this->secure === 'tls')
 		{
 			// send starttls
-			fputs($this->connection, 'STARTTLS'.$this->newline);
+			$this->write($this->connection, 'STARTTLS'.$this->newline);
 			if ($this->code() !== 220) return false;
 			
 			// enable crypto
 			stream_socket_enable_crypto($this->connection, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
 			
 			// send helo
-			fputs($this->connection, 'HELO '.$this->localhost.$this->newline);
+			$this->write($this->connection, 'HELO '.$this->localhost.$this->newline);
 			if ($this->code() !== 250) return false;
 		}
 		
-		// if not localhost...
-		if($this->host !== 'localhost')
+		// if we need authentication...
+		if($this->requires_auth)
 		{
 			// send auth login
-			fputs($this->connection, 'AUTH LOGIN'.$this->newline);
+			$this->write($this->connection, 'AUTH LOGIN'.$this->newline);
 			if ($this->code() !== 334) return false;
 			
 			// send username
-			fputs($this->connection, base64_encode($this->user).$this->newline);
+			$this->write($this->connection, base64_encode($this->user).$this->newline);
 			if ($this->code() !== 334) return false;
 			
 			// send password
-			fputs($this->connection, base64_encode($this->pass).$this->newline);
+			$this->write($this->connection, base64_encode($this->pass).$this->newline);
 			if ($this->code() !== 235) return false;
 		}
 		
@@ -335,23 +337,23 @@ class SMTP
 	private function smtp_deliver()
 	{
 		// send mailfrom
-		fputs($this->connection, 'MAIL FROM: <'. $this->from['email'] .'>'.$this->newline);
+		$this->write($this->connection, 'MAIL FROM: <'. $this->from['email'] .'>'.$this->newline);
 		$this->status();
 		
 		// send rcptto
 		$recipients = $this->to + $this->cc + $this->bcc;
 		foreach ($recipients as $r)
 		{
-			fputs($this->connection, 'RCPT TO: <'.$r['email'].'>'.$this->newline);
+			$this->write($this->connection, 'RCPT TO: <'.$r['email'].'>'.$this->newline);
 			$this->status();
 		}
 		
 		// send data
-		fputs($this->connection, 'DATA'.$this->newline);
+		$this->write($this->connection, 'DATA'.$this->newline);
 		$this->status();
 		
 		// send headers
-		fputs($this->connection, $this->smtp_construct());
+		$this->write($this->connection, $this->smtp_construct());
 		if ($this->code() === 250)
 		{
 			return true;
@@ -365,7 +367,7 @@ class SMTP
 	private function smtp_disconnect()
 	{
 		// send quit
-		fputs($this->connection, 'QUIT'.$this->newline);
+		$this->write($this->connection, 'QUIT'.$this->newline);
 		$this->status();
 		
 		// close connection
@@ -406,5 +408,11 @@ class SMTP
 		{
 			return $recipient['email'];
 		}
+	}
+	
+	private function write($connection, $content) {
+		if ($this->debug_mode) echo '<code>'.$content.'</code><br/>';
+		fputs($connection, $content);
+		
 	}
 }
