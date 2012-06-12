@@ -77,7 +77,7 @@ $from = array('paul@gmail.com', 'Paul T.');
 $mail->from($from);
 
 // add reply-to
-$mail->reply-to($from);
+$mail->reply($from);
 ```
 
 You can add attachments:
