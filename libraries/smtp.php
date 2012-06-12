@@ -42,17 +42,29 @@ class SMTP
 	private $wordwrap = 70;
 	private $text_mode = false;
 
-	public function __construct()
+	public function __construct($connection = null)
 	{
 		// load config
 		$config = Config::get('smtp');
+	
+		// if no connection...
+		if (!$connection)
+		{
+			// load connection
+			$connection = $config['connections'][$config['default']];
+		}
+		else
+		{
+			// load connection
+			$connection = $config['connections'][$connection];
+		}
 		
-		// set server vars
-		$this->host = $config['host'];
-		$this->port = $config['port'];
-		$this->secure = $config['secure'];
-		$this->user = $config['user'];
-		$this->pass = $config['pass'];
+		// set connection vars
+		$this->host = $connection['host'];
+		$this->port = $connection['port'];
+		$this->secure = $connection['secure'];
+		$this->user = $connection['user'];
+		$this->pass = $connection['pass'];
 		
 		// set debug mode
 		$this->debug_mode = $config['debug_mode'];
@@ -60,42 +72,128 @@ class SMTP
 	
 	public function from($email, $name = null)
 	{
-		$this->from = array(
-			'email' => $email,
-			'name' => $name,
-		);
+		// if not array...
+		if (!is_array($email))
+		{
+			// set normal
+			$this->from = array(
+				'email' => $email,
+				'name' => $name,
+			);
+		}
+		else
+		{
+			// set convention
+			$this->from = array(
+				'email' => isset($email[0]) ? $email[0] : null,
+				'name' => isset($email[1]) ? $email[1] : null,
+			);			
+		}
 	}
 	
 	public function reply($email, $name = null)
 	{
-		$this->reply = array(
-			'email' => $email,
-			'name' => $name,
-		);
+		// if not array...
+		if (!is_array($email))
+		{
+			// set normal
+			$this->reply = array(
+				'email' => $email,
+				'name' => $name,
+			);
+		}
+		else
+		{
+			// set convention
+			$this->reply = array(
+				'email' => isset($email[0]) ? $email[0] : null,
+				'name' => isset($email[1]) ? $email[1] : null,
+			);			
+		}
 	}
 	
 	public function to($email, $name = null)
 	{
-		$this->to[] = array(
-			'email' => $email,
-			'name' => $name,
-		);
+		// if not array...
+		if (!is_array($email))
+		{
+			// set normal
+			$this->to[] = array(
+				'email' => $email,
+				'name' => $name,
+			);
+		}
+		else
+		{
+			// spin array...
+			foreach ($email as $e)
+			{
+				// fix array
+				if (!is_array($e)) $e = array($e);
+			
+				// set convention
+				$this->to[] = array(
+					'email' => isset($e[0]) ? $e[0] : null,
+					'name' => isset($e[1]) ? $e[1] : null,
+				);
+			}
+		}
 	}
 	
 	public function cc($email, $name = null)
 	{
-		$this->cc[] = array(
-			'email' => $email,
-			'name' => $name,
-		);
+		// if not array...
+		if (!is_array($email))
+		{
+			// set normal
+			$this->cc[] = array(
+				'email' => $email,
+				'name' => $name,
+			);
+		}
+		else
+		{
+			// spin array...
+			foreach ($email as $e)
+			{
+				// fix array
+				if (!is_array($e)) $e = array($e);
+			
+				// set convention
+				$this->cc[] = array(
+					'email' => isset($e[0]) ? $e[0] : null,
+					'name' => isset($e[1]) ? $e[1] : null,
+				);
+			}
+		}
 	}
 	
 	public function bcc($email, $name = null)
 	{
-		$this->bcc[] = array(
-			'email' => $email,
-			'name' => $name,
-		);
+		// if not array...
+		if (!is_array($email))
+		{
+			// set normal
+			$this->bcc[] = array(
+				'email' => $email,
+				'name' => $name,
+			);
+		}
+		else
+		{
+			// spin array...
+			foreach ($email as $e)
+			{
+				// fix array
+				if (!is_array($e)) $e = array($e);
+			
+				// set convention
+				$this->bcc[] = array(
+					'email' => isset($e[0]) ? $e[0] : null,
+					'name' => isset($e[1]) ? $e[1] : null,
+				);
+			}
+		}
 	}
 	
 	public function body($html)

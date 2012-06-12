@@ -41,10 +41,43 @@ $mail->bcc('james@gmail.com');
 $mail->bcc('peter@gmail.com');
 ```
 
+You can add recipients en masse:
+
+```php
+// build list
+$list = array();
+$list[] = 'matthew@gmail.com';
+$list[] = 'mark@gmail.com';
+
+// add to
+$mail->to($list);
+
+// build list w/ names
+$list = array();
+$list[] = array('matthew@gmail.com', 'Matthew');
+$list[] = array('mark@gmail.com', 'Mark');
+
+// add to
+$mail->to($list);
+```
+
 You can set a custom reply-to address:
 
 ```php
 $mail->reply('paul@gmail.com', 'Paul T.');
+```
+
+You can pass arrays to set from and reply-to addresses:
+
+```php
+// set from
+$from = array('paul@gmail.com', 'Paul T.');
+
+// add from
+$mail->from($from);
+
+// add reply-to
+$mail->reply-to($from);
 ```
 
 You can add attachments:
