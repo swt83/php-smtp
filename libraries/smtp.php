@@ -13,7 +13,6 @@ class SMTP
 {
 	// connection
 	private $connection;
-	private $localhost = 'localhost';
 	private $timeout = 30;
 	private $debug_mode = false;
 
