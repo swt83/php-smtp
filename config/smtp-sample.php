@@ -15,6 +15,7 @@ return array(
 	'default' => 'primary',
 	'connections' => array(
 		'primary' => array(
+			'auth' => false, // true if authorization required
 			'host' => '',
 			'port' => '',
 			'secure' => null, // null, 'ssl', or 'tls'

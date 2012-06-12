@@ -18,6 +18,7 @@ class SMTP
 	private $debug_mode = false;
 
 	// auth
+	private $auth;
 	private $host;
 	private $port;
 	private $secure; // null, ssl, or tls
@@ -34,13 +35,13 @@ class SMTP
 	private $text;
 	private $subject;
 	private $attachments = array();
+	private $text_mode = false;
 	
 	// misc
 	private $charset = 'UTF-8';
 	private $newline = "\r\n";
 	private $encoding = '7bit';
 	private $wordwrap = 70;
-	private $text_mode = false;
 
 	public function __construct($connection = null)
 	{
@@ -277,8 +278,8 @@ class SMTP
 			if ($this->code() !== 250) return false;
 		}
 		
-		// if not localhost...
-		if($this->host !== 'localhost')
+		// if auth required...
+		if($this->auth)
 		{
 			// send auth login
 			fputs($this->connection, 'AUTH LOGIN'.$this->newline);
