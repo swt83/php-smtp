@@ -64,6 +64,7 @@ class SMTP
 		$this->host = $connection['host'];
 		$this->port = $connection['port'];
 		$this->secure = $connection['secure'];
+		$this->auth = $connection['auth'];
 		$this->user = $connection['user'];
 		$this->pass = $connection['pass'];
 		
@@ -264,7 +265,7 @@ class SMTP
 		$this->status();
 		
 		// if tls required...
-		if($this->secure === 'tls')
+		if ($this->secure === 'tls')
 		{
 			// send starttls
 			fputs($this->connection, 'STARTTLS'.$this->newline);
@@ -279,7 +280,7 @@ class SMTP
 		}
 		
 		// if auth required...
-		if($this->auth)
+		if ($this->auth)
 		{
 			// send auth login
 			fputs($this->connection, 'AUTH LOGIN'.$this->newline);
