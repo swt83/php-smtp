@@ -18,10 +18,10 @@ class SMTP
 	private $debug_mode = false;
 
 	// auth
-	private $auth;
 	private $host;
 	private $port;
-	private $secure; // null, ssl, or tls
+	private $secure; // null, 'ssl', or 'tls'
+	private $auth; // true if authorization required
 	private $user;
 	private $pass;
 	
