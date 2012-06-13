@@ -215,7 +215,21 @@ class SMTP
 	
 	public function attach($path)
 	{
-		$this->attachments[] = $path;
+		// if not array...
+		if (!is_array($path))
+		{
+			// add
+			$this->attachments[] = $path;
+		}
+		else
+		{
+			// spin array...
+			foreach ($path as $p)
+			{
+				// add
+				$this->attachments[] = $p;
+			}
+		}
 	}
 	
 	public function send_text()
