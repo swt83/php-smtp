@@ -220,8 +220,11 @@ class SMTP
 	
 	public function send_text()
 	{
+		// text mode
 		$this->text_mode = true;
-		$this->send();
+		
+		// return
+		return $this->send();
 	}
 	
 	public function send()
@@ -255,43 +258,62 @@ class SMTP
 	{
 		// modify url, if needed
 		if ($this->secure === 'ssl') $this->host = 'ssl://'.$this->host;
-	
-		// connect to server
+		
+		// After each request we send to the SMTP server, we'll call the
+		// response() method to see what the server had to say.  If debug mode
+		// is activated, then these responses will be printed to the screen.
+		// Note that the code() method automatically calls response().
+		
+		// open connection
 		$this->connection = fsockopen($this->host, $this->port, $errno, $errstr, $this->timeout);
+		
+		// response
 		if ($this->code() !== 220) return false;
 		
-		// send helo
-		fputs($this->connection, 'HELO '.$this->localhost.$this->newline);
-		$this->status();
+		// request
+		$this->request('HELO '.$this->localhost.$this->newline);
+		
+		// response
+		$this->response();
 		
 		// if tls required...
 		if ($this->secure === 'tls')
 		{
-			// send starttls
-			fputs($this->connection, 'STARTTLS'.$this->newline);
+			// request
+			$this->request('STARTTLS'.$this->newline);
+			
+			// response
 			if ($this->code() !== 220) return false;
 			
 			// enable crypto
 			stream_socket_enable_crypto($this->connection, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
 			
-			// send helo
-			fputs($this->connection, 'HELO '.$this->localhost.$this->newline);
+			// request
+			$this->request('HELO '.$this->localhost.$this->newline);
+			
+			// response
 			if ($this->code() !== 250) return false;
 		}
 		
 		// if auth required...
 		if ($this->auth)
 		{
-			// send auth login
-			fputs($this->connection, 'AUTH LOGIN'.$this->newline);
+			// request
+			$this->request('AUTH LOGIN'.$this->newline);
+			
+			// response
 			if ($this->code() !== 334) return false;
 			
-			// send username
-			fputs($this->connection, base64_encode($this->user).$this->newline);
+			// request
+			$this->request(base64_encode($this->user).$this->newline);
+			
+			// response
 			if ($this->code() !== 334) return false;
 			
-			// send password
-			fputs($this->connection, base64_encode($this->pass).$this->newline);
+			// request
+			$this->request(base64_encode($this->pass).$this->newline);
+			
+			// response
 			if ($this->code() !== 235) return false;
 		}
 		
@@ -434,24 +456,33 @@ class SMTP
 	
 	private function smtp_deliver()
 	{
-		// send mailfrom
-		fputs($this->connection, 'MAIL FROM: <'. $this->from['email'] .'>'.$this->newline);
-		$this->status();
+		// request
+		$this->request('MAIL FROM: <'. $this->from['email'] .'>'.$this->newline);
 		
-		// send rcptto
+		// response
+		$this->response();
+		
+		// spin recipients...
 		$recipients = $this->to + $this->cc + $this->bcc;
 		foreach ($recipients as $r)
 		{
-			fputs($this->connection, 'RCPT TO: <'.$r['email'].'>'.$this->newline);
-			$this->status();
+			// request
+			$this->request('RCPT TO: <'.$r['email'].'>'.$this->newline);
+			
+			// response
+			$this->response();
 		}
 		
-		// send data
-		fputs($this->connection, 'DATA'.$this->newline);
-		$this->status();
+		// request
+		$this->request('DATA'.$this->newline);
 		
-		// send headers
-		fputs($this->connection, $this->smtp_construct());
+		// response
+		$this->response();
+		
+		// request
+		$this->request($this->smtp_construct());
+		
+		// response
 		if ($this->code() === 250)
 		{
 			return true;
@@ -464,15 +495,32 @@ class SMTP
 	
 	private function smtp_disconnect()
 	{
-		// send quit
-		fputs($this->connection, 'QUIT'.$this->newline);
-		$this->status();
+		// request
+		$this->request('QUIT'.$this->newline);
+		
+		// response
+		$this->response();
 		
 		// close connection
 		fclose($this->connection);
 	}
 	
-	private function status()
+	private function code()
+	{
+		// filter code from response
+		return (int) substr($this->response(), 0, 3);
+	}
+	
+	private function request($string)
+	{
+		// report
+		if ($this->debug_mode) echo '<code><strong>'.$string.'</strong></code><br/>';
+		
+		// send
+		fputs($this->connection, $string);
+	}
+	
+	private function response()
 	{
 		// get response
 		$response = '';
@@ -487,12 +535,6 @@ class SMTP
 		
 		// return
 		return $response;
-	}
-	
-	private function code()
-	{
-		// filter code from response
-		return (int) substr($this->status(), 0, 3);
 	}
 	
 	private function format($recipient)
