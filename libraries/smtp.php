@@ -68,6 +68,9 @@ class SMTP
 		$this->user = $connection['user'];
 		$this->pass = $connection['pass'];
 		
+		// set the hostname for the smtp 'helo' command
+		$this->localhost = $config['localhost'];
+		
 		// set debug mode
 		$this->debug_mode = $config['debug_mode'];
 	}
@@ -344,6 +347,7 @@ class SMTP
 		$headers[] = 'From: '.$this->format($this->from);
 		$headers[] = 'Reply-To: '.$this->format($this->reply ? $this->reply : $this->from);
 		$headers[] = 'Subject: '.$this->subject;
+		$headers[] = 'Date: '.date("D, d M Y H:i:s");
 		
 		// add to receipients
 		if (!empty($this->to))

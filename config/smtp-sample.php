@@ -8,6 +8,9 @@ return array(
 	
 	'debug_mode' => false,
 	
+	// The hostname which will be used for the SMTP 'HELO' command
+	'localhost' => 'mail.example.com',
+	
 	// Define the different connections that can be used.
 	// You can set which connection to use when you create
 	// the SMTP object: ``$mail = new SMTP('my_connection')``.
