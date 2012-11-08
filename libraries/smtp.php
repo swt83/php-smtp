@@ -46,7 +46,7 @@ class SMTP
 	public function __construct($connection = null)
 	{
 		// load config
-		$config = Config::get('smtp');
+		$config = Config::get('smtp::smtp');
 	
 		// if no connection...
 		if (!$connection)
