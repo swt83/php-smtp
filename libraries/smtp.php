@@ -344,6 +344,7 @@ class SMTP
 		$headers[] = 'From: '.$this->format($this->from);
 		$headers[] = 'Reply-To: '.$this->format($this->reply ? $this->reply : $this->from);
 		$headers[] = 'Subject: '.$this->subject;
+		$headers[] = 'Date: '.date("r");
 		
 		// add to receipients
 		if (!empty($this->to))
@@ -560,7 +561,7 @@ class SMTP
 		}
 		else
 		{
-			return $recipient['email'];
+			return '<' . $recipient['email'] . '>';
 		}
 	}
 }
