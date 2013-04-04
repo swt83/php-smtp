@@ -9,39 +9,39 @@
  * @license    MIT License
  */
 
-class SMTP
-{
+class SMTP {
+
     // connection
-    private $connection;
-    private $localhost = 'localhost';
-    private $timeout = 30;
-    private $debug_mode = false;
+    protected $connection;
+    protected $localhost;
+    protected $timeout = 30;
+    protected $debug_mode = false;
 
     // auth
-    private $host;
-    private $port;
-    private $secure; // null, 'ssl', or 'tls'
-    private $auth; // true if authorization required
-    private $user;
-    private $pass;
+    protected $host;
+    protected $port;
+    protected $secure; // null, 'ssl', or 'tls'
+    protected $auth; // true if authorization required
+    protected $user;
+    protected $pass;
     
     // email
-    private $to = array();
-    private $cc = array();
-    private $bcc = array();
-    private $from;
-    private $reply;
-    private $body;
-    private $text;
-    private $subject;
-    private $attachments = array();
-    private $text_mode = false;
+    protected $to = array();
+    protected $cc = array();
+    protected $bcc = array();
+    protected $from;
+    protected $reply;
+    protected $body;
+    protected $text;
+    protected $subject;
+    protected $attachments = array();
+    protected $text_mode = false;
     
     // misc
-    private $charset = 'UTF-8';
-    private $newline = "\r\n";
-    private $encoding = '7bit';
-    private $wordwrap = 70;
+    protected $charset = 'UTF-8';
+    protected $newline = "\r\n";
+    protected $encoding = '7bit';
+    protected $wordwrap = 70;
 
     public function __construct($connection = null)
     {
@@ -59,6 +59,9 @@ class SMTP
             // load connection
             $connection = $config['connections'][$connection];
         }
+
+        // set localhost
+        $this->localhost = $config['localhost'];
         
         // set connection vars
         $this->host = $connection['host'];
@@ -274,7 +277,7 @@ class SMTP
         return $result;
     }
     
-    private function smtp_connect()
+    protected function smtp_connect()
     {
         // modify url, if needed
         if ($this->secure === 'ssl') $this->host = 'ssl://'.$this->host;
@@ -341,7 +344,7 @@ class SMTP
         return true;
     }
     
-    private function smtp_construct()
+    protected function smtp_construct()
     {
         // set unique boundary
         $boundary = md5(uniqid(time()));
@@ -350,7 +353,7 @@ class SMTP
         $headers[] = 'From: '.$this->format($this->from);
         $headers[] = 'Reply-To: '.$this->format($this->reply ? $this->reply : $this->from);
         $headers[] = 'Subject: '.$this->subject;
-        $headers[] = 'Date: '.date("r");
+        $headers[] = 'Date: '.date('r');
         
         // add to receipients
         if (!empty($this->to))
@@ -475,7 +478,7 @@ class SMTP
         return $email;
     }
     
-    private function smtp_deliver()
+    protected function smtp_deliver()
     {
         // request
         $this->request('MAIL FROM: <'. $this->from['email'] .'>'.$this->newline);
@@ -514,7 +517,7 @@ class SMTP
         }
     }
     
-    private function smtp_disconnect()
+    protected function smtp_disconnect()
     {
         // request
         $this->request('QUIT'.$this->newline);
@@ -526,13 +529,13 @@ class SMTP
         fclose($this->connection);
     }
     
-    private function code()
+    protected function code()
     {
         // filter code from response
         return (int) substr($this->response(), 0, 3);
     }
     
-    private function request($string)
+    protected function request($string)
     {
         // report
         if ($this->debug_mode) echo '<code><strong>'.$string.'</strong></code><br/>';
@@ -541,7 +544,7 @@ class SMTP
         fputs($this->connection, $string);
     }
     
-    private function response()
+    protected function response()
     {
         // get response
         $response = '';
@@ -558,7 +561,7 @@ class SMTP
         return $response;
     }
     
-    private function format($recipient)
+    protected function format($recipient)
     {
         // format "name <email>"
         if ($recipient['name'])
@@ -570,4 +573,5 @@ class SMTP
             return '<' . $recipient['email'] . '>';
         }
     }
+
 }
