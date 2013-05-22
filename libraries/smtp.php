@@ -487,7 +487,7 @@ class SMTP {
         $this->response();
         
         // spin recipients...
-        $recipients = $this->to + $this->cc + $this->bcc;
+        $recipients = array_merge($this->to, $this->cc, $this->bcc);
         foreach ($recipients as $r)
         {
             // request
