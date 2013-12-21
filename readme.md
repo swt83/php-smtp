@@ -1,20 +1,32 @@
-**December 17, 2013 - Discontinued, as Laravel 4 now includes its own mail library.**
-
-# SMTP for LaravelPHP #
+# SMTP
 
 This package is a new SMTP class built from scratch.  Many of the existing email libraries are old, bloated, not on GitHub, and worst of all written in camelcase.  I wanted something short and simple.
 
+12/20/2013 - I know that Laravel 4 contains its own mailing class based on SwiftMailer, but I still have problems with that software.  I've decided to continue development of this package for the time being.
+
 ## Install ##
 
-In ``application/bundles.php`` add:
+Normal install via Composer.
+
+### Provider
+
+Register your service provider in ``app/config/app.php``:
 
 ```php
-'smtp' => array('auto' => true),
+'Travis\SMTP\Provider'
 ```
 
-Copy the sample config file to ``application/config/smtp.php`` and input the proper information.
+You may also wish to add an alias to remove the namespace:
 
-## Usage ##
+```php
+'Date' => 'Travis\SMTP'
+```
+
+### Configuration
+
+You should copy the config file provided to ``app/config/packages/travis/smtp/config.php`` and input the necessary information.
+
+## Usage
 
 A normal email would go like this:
 
@@ -101,11 +113,11 @@ You can send text-only emails:
 $result = $mail->send_text();
 ```
 
-## Debug Mode ##
+### Debug Mode
 
 In the config you can flag ``'debug_mode' = true;``, which can be helpful in testing your SMTP connections.  It will echo server responses from each step in the email sending process.
 
-## Limitations ##
+## Limitations
 
 Below are some current limitations.  Please feel free to contribute to this ongoing project.
 

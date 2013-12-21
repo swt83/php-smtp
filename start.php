@@ -1,5 +1,5 @@
 <?php
 
 Autoloader::map(array(
-	'SMTP' => __DIR__.'/libraries/smtp.php',
+    'Travis\SMTP' => __DIR__.'/src/Travis/SMTP.php',
 ));

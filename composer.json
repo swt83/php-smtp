@@ -1,0 +1,22 @@
+{
+    "name": "travis/smtp",
+    "description": "A Laravel PHP library for sending SMTP emails.",
+    "homepage": "https://github.com/swt83/php-laravel-smtp",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Scott Travis",
+            "email": "scott@swt83.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Travis\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
