@@ -19,7 +19,7 @@ Register your service provider in ``app/config/app.php``:
 You may also wish to add an alias to remove the namespace:
 
 ```php
-'Date' => 'Travis\SMTP'
+'SMTP' => 'Travis\SMTP'
 ```
 
 ### Configuration
