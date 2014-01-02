@@ -2,36 +2,30 @@
 
 This package is a new SMTP class built from scratch.  Many of the existing email libraries are old, bloated, not on GitHub, and worst of all written in camelcase.  I wanted something short and simple.
 
-12/20/2013 - I know that Laravel 4 contains its own mailing class based on SwiftMailer, but I still have problems with that software.  I've decided to continue development of this package for the time being.
+2013-12-20: I know that Laravel 4 contains its own mailing class based on SwiftMailer, but I still have problems with that software.  I've decided to continue development of this package for the time being.
 
-## Install ##
+## Install
 
 Normal install via Composer.
 
 ### Provider
 
-Register your service provider in ``app/config/app.php``:
+Register the service provider in your ``app/config/app.php`` file:
 
 ```php
-'Travis\SMTP\Provider'
+'Travis\SMTP\Provider',
 ```
 
-You may also wish to add an alias to remove the namespace:
+### Config
 
-```php
-'SMTP' => 'Travis\SMTP'
-```
-
-### Configuration
-
-You should copy the config file provided to ``app/config/packages/travis/smtp/config.php`` and input the necessary information.
+Copy the config file to ``app/config/packages/travis/smtp/config.php`` and input the necessary information.
 
 ## Usage
 
 A normal email would go like this:
 
 ```php
-$mail = new SMTP();
+$mail = new Travis\SMTP();
 $mail->to('tim@gmail.com');
 $mail->from('paul@gmail.com', 'Paul T.');
 $mail->subject('Hello World');
