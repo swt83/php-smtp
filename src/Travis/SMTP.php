@@ -275,7 +275,7 @@ class SMTP {
         if ($this->code() !== 220) return false;
 
         // request
-        $this->request('HELO '.$this->localhost.$this->newline);
+        $this->request(($this->auth ? 'EHLO' : 'HELO').' '.$this->localhost.$this->newline);
 
         // response
         $this->response();
@@ -293,7 +293,7 @@ class SMTP {
             stream_socket_enable_crypto($this->connection, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
 
             // request
-            $this->request('HELO '.$this->localhost.$this->newline);
+            $this->request(($this->auth ? 'EHLO' : 'HELO').' '.$this->localhost.$this->newline);
 
             // response
             if ($this->code() !== 250) return false;
