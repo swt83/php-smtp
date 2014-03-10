@@ -20,7 +20,11 @@ class Provider extends ServiceProvider {
      */
     public function boot()
     {
-        $this->package('travis/smtp');
+        // set root
+        $src = __DIR__.'/../../../';
+
+        // register package
+        $this->package('travis/smtp', null, $src);
     }
 
     /**
