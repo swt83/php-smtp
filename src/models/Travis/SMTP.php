@@ -67,7 +67,7 @@ class SMTP {
 
     public function reply($email, $name = null)
     {
-        // set convention
+        // set
         $this->reply = array(
             'email' => $email,
             'name' => $name,
