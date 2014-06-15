@@ -2,7 +2,9 @@
 
 This package is a new SMTP class built from scratch.  Many of the existing email libraries are old, bloated, not on GitHub, and worst of all written in camelcase.  I wanted something short and simple.
 
-2013-12-20: I know that Laravel 4 contains its own mailing class based on SwiftMailer, but I still have problems with that software.  I've decided to continue development of this package for the time being.
+2013-12-20 -- I know that Laravel 4 contains its own mailing class based on SwiftMailer, but I still have problems with that software.  I've decided to continue development of this package for the time being.
+
+2014-06-15 -- I removed the ability to set recipients en masse with arrays.  It was a little confusing and I think caused more problems than it solved.  You just need to loop and array and assign individually.
 
 ## Install
 
