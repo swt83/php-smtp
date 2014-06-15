@@ -58,44 +58,20 @@ class SMTP {
 
     public function from($email, $name = null)
     {
-        // if not array...
-        if (!is_array($email))
-        {
-            // set normal
-            $this->from = array(
-                'email' => $email,
-                'name' => $name,
-            );
-        }
-        else
-        {
-            // set convention
-            $this->from = array(
-                'email' => isset($email[0]) ? $email[0] : null,
-                'name' => isset($email[1]) ? $email[1] : null,
-            );
-        }
+        // set
+        $this->from = array(
+            'email' => $email,
+            'name' => $name,
+        );
     }
 
     public function reply($email, $name = null)
     {
-        // if not array...
-        if (!is_array($email))
-        {
-            // set normal
-            $this->reply = array(
-                'email' => $email,
-                'name' => $name,
-            );
-        }
-        else
-        {
-            // set convention
-            $this->reply = array(
-                'email' => isset($email[0]) ? $email[0] : null,
-                'name' => isset($email[1]) ? $email[1] : null,
-            );
-        }
+        // set convention
+        $this->reply = array(
+            'email' => $email,
+            'name' => $name,
+        );
     }
 
     public function replyto($email, $name = null)
@@ -106,86 +82,29 @@ class SMTP {
 
     public function to($email, $name = null)
     {
-        // if not array...
-        if (!is_array($email))
-        {
-            // set normal
-            $this->to[] = array(
-                'email' => $email,
-                'name' => $name,
-            );
-        }
-        else
-        {
-            // spin array...
-            foreach ($email as $e)
-            {
-                // fix array
-                if (!is_array($e)) $e = array($e);
-
-                // set convention
-                $this->to[] = array(
-                    'email' => isset($e[0]) ? $e[0] : null,
-                    'name' => isset($e[1]) ? $e[1] : null,
-                );
-            }
-        }
+        // set
+        $this->to[] = array(
+            'email' => $email,
+            'name' => $name,
+        );
     }
 
     public function cc($email, $name = null)
     {
-        // if not array...
-        if (!is_array($email))
-        {
-            // set normal
-            $this->cc[] = array(
-                'email' => $email,
-                'name' => $name,
-            );
-        }
-        else
-        {
-            // spin array...
-            foreach ($email as $e)
-            {
-                // fix array
-                if (!is_array($e)) $e = array($e);
-
-                // set convention
-                $this->cc[] = array(
-                    'email' => isset($e[0]) ? $e[0] : null,
-                    'name' => isset($e[1]) ? $e[1] : null,
-                );
-            }
-        }
+        // set
+        $this->cc[] = array(
+            'email' => $email,
+            'name' => $name,
+        );
     }
 
     public function bcc($email, $name = null)
     {
-        // if not array...
-        if (!is_array($email))
-        {
-            // set normal
-            $this->bcc[] = array(
-                'email' => $email,
-                'name' => $name,
-            );
-        }
-        else
-        {
-            // spin array...
-            foreach ($email as $e)
-            {
-                // fix array
-                if (!is_array($e)) $e = array($e);
-
-                // set convention
-                $this->bcc[] = array(
-                    'email' => isset($e[0]) ? $e[0] : null,
-                    'name' => isset($e[1]) ? $e[1] : null,
-                );
-            }
-        }
+        // set
+        $this->bcc[] = array(
+            'email' => $email,
+            'name' => $name,
+        );
     }
 
     public function body($html)
@@ -205,21 +124,8 @@ class SMTP {
 
     public function attach($path)
     {
-        // if not array...
-        if (!is_array($path))
-        {
-            // add
-            $this->attachments[] = $path;
-        }
-        else
-        {
-            // spin array...
-            foreach ($path as $p)
-            {
-                // add
-                $this->attachments[] = $p;
-            }
-        }
+        // add
+        $this->attachments[] = $path;
     }
 
     public function send_text()
