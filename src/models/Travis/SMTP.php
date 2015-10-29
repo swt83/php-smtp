@@ -109,12 +109,12 @@ class SMTP {
 
     public function body($html)
     {
-        $this->body = $html;
+        $this->text = $this->normalize($html);
     }
 
     public function text($text)
     {
-        $this->text = wordwrap(strip_tags($text), $this->wordwrap);
+        $this->text = $this->normalize(wordwrap(strip_tags($text), $this->wordwrap));
     }
 
     public function subject($subject)
@@ -460,5 +460,22 @@ class SMTP {
             return '<' . $recipient['email'] . '>';
         }
     }
+    
+    private function normalize($lines)
+    {
+        // Normalize content to match RFC-821 max 1000 characters line length including the CRLF
+        
+        $lines = str_replace("\r", "\n", $lines);
 
+        $content = '';
+        foreach(explode("\n", $lines) as $line)
+        {
+            foreach(str_split($line, 998) as $result)
+            {
+                $content .= $result . $this->newline;
+            }
+        }
+
+        return $content;
+    }
 }
