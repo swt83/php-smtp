@@ -2,7 +2,7 @@
 
 This package is a new SMTP class built from scratch.  Many of the existing email libraries are old, bloated, not on GitHub, and worst of all written in camelcase.  I wanted something short and simple.
 
-### Tags:
+## Tags
 
 - ``1.0`` for Laravel v4
 - ``1.1`` is framework agnostic
