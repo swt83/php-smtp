@@ -1,7 +1,7 @@
 {
     "name": "travis/smtp",
-    "description": "A Laravel PHP library for sending SMTP emails.",
-    "homepage": "https://github.com/swt83/php-laravel-smtp",
+    "description": "A PHP library for sending SMTP emails.",
+    "homepage": "https://github.com/swt83/php-smtp",
     "license": "MIT",
     "authors": [
         {
@@ -9,8 +9,15 @@
             "email": "scott.w.travis@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:swt83/php-ex.git"
+        }
+    ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "travis/ex": "*"
     },
     "autoload": {
         "psr-0": {

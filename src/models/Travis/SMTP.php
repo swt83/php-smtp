@@ -4,6 +4,9 @@ namespace Travis;
 
 class SMTP {
 
+    // config
+    protected $config = [];
+
     // connection
     protected $connection;
     protected $localhost;
@@ -19,15 +22,15 @@ class SMTP {
     protected $pass;
 
     // email
-    protected $to = array();
-    protected $cc = array();
-    protected $bcc = array();
+    protected $to = [];
+    protected $cc = [];
+    protected $bcc = [];
     protected $from;
     protected $reply;
     protected $body;
     protected $text;
     protected $subject;
-    protected $attachments = array();
+    protected $attachments = [];
     protected $text_mode = false;
 
     // misc
@@ -36,10 +39,13 @@ class SMTP {
     protected $encoding = '7bit';
     protected $wordwrap = 70;
 
-    public function __construct($connection = null)
+    public function __construct($config, $connection = null)
     {
-        // load connection
-        $connection = $connection ? \Config::get('smtp::connections.'.$connection) : \Config::get('smtp::connections.'.\Config::get('smtp::default'));
+        // set config
+        $this->config = $config;
+
+        // decide on a connection
+        $connection = $connection ? $this->config('connections.'.$connection) : $this->config('connections.'.$this->config('default'));
 
         // set connection vars
         $this->host = $connection['host'];
@@ -50,10 +56,10 @@ class SMTP {
         $this->pass = $connection['pass'];
 
         // set debug mode
-        $this->debug_mode = \Config::get('smtp::debug_mode');
+        $this->debug_mode = $this->config('debug_mode');
 
         // set localhost
-        $this->localhost = \Config::get('smtp::default');
+        $this->localhost = $this->config('default');
     }
 
     public function from($email, $name = null)
@@ -461,11 +467,11 @@ class SMTP {
             return '<' . $recipient['email'] . '>';
         }
     }
-    
+
     private function normalize($lines)
     {
         // Normalize content to match RFC-821 max 1000 characters line length including the CRLF
-        
+
         $lines = str_replace("\r", "\n", $lines);
 
         $content = '';
@@ -478,5 +484,10 @@ class SMTP {
         }
 
         return $content;
+    }
+
+    private function config($coords, $default = null)
+    {
+        return ex($this->config, $coords, $default);
     }
 }

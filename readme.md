@@ -2,32 +2,47 @@
 
 This package is a new SMTP class built from scratch.  Many of the existing email libraries are old, bloated, not on GitHub, and worst of all written in camelcase.  I wanted something short and simple.
 
-2013-12-20 -- I know that Laravel 4 contains its own mailing class based on SwiftMailer, but I still have problems with that software.  I've decided to continue development of this package for the time being.
+### Tags:
 
-2014-06-15 -- I removed the ability to set recipients en masse with arrays.  It was a little confusing and I think caused more problems than it solved.  You just need to loop an array and assign individually.
+- ``1.0`` for Laravel v4
+- ``1.1`` is framework agnostic
 
 ## Install
 
 Normal install via Composer.
 
-### Provider
+## Config
 
-Register the service provider in your ``app/config/app.php`` file:
+Everytime you make a new SMTP object, you have to pass a config array.  This is how we make the package framework agnostic.  The included config file is your reference for the required fields and values.
+
+One method is to pass the array directly from the file:
 
 ```php
-'Travis\SMTP\Provider',
+$mail = new Travis\SMTP(require __DIR__ . '/path/to/config.php');
 ```
 
-### Config
+Another method is to use Laravel to pass a config after manually copying the file to ``app/config/smtp.php``:
 
-Copy the config file to ``app/config/packages/travis/smtp/config.php`` and input the necessary information.
+```php
+$mail = new Travis\SMTP(Config::get('smtp'));
+```
+
+Note that your config includes multiple connections, and you can choose which one to use when you forge the object:
+
+```php
+$mail = new Travis\SMTP($config, 'amazon');
+```
+
+You can also set a default connection in the config array.
 
 ## Usage
 
 A normal email would go like this:
 
 ```php
-$mail = new Travis\SMTP();
+use Travis\SMTP;
+
+$mail = new SMTP($config);
 $mail->to('tim@gmail.com');
 $mail->from('paul@gmail.com', 'Paul T.'); // email is required, name is optional
 $mail->subject('Hello World');

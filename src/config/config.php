@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     // Debug mode will echo connection status alerts to
     // the screen throughout the email sending process.
@@ -13,16 +13,16 @@ return array(
     // the SMTP object: ``$mail = new SMTP('my_connection')``.
 
     'default' => 'primary',
-    'connections' => array(
-        'primary' => array(
+    'connections' => [
+        'primary' => [
             'host' => '',
             'port' => '',
             'secure' => null, // null, 'ssl', or 'tls'
             'auth' => false, // true if authorization required
             'user' => '',
             'pass' => '',
-        ),
-    ),
+        ],
+    ],
 
     // NERD ONLY VARIABLE: You may want to change the origin
     // of the HELO request, as having the default value of
@@ -31,4 +31,4 @@ return array(
 
     'localhost' => 'localhost', // rename to the URL you want as origin of email
 
-);
+];
