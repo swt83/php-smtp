@@ -6,11 +6,6 @@ This package is a new SMTP class built from scratch.  Many of the existing email
 
 Normal install via Composer.
 
-### Tags
-
-- ``1.0`` for Laravel v4
-- ``1.1`` is framework agnostic
-
 ## Config
 
 Everytime you make a new SMTP object, you have to pass a config array.  This is how we make the package framework agnostic.  The included config file is your reference for the required fields and values.
