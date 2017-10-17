@@ -59,7 +59,7 @@ class SMTP {
         $this->debug_mode = $this->config('debug_mode');
 
         // set localhost
-        $this->localhost = $this->config('default');
+        $this->localhost = $this->config('localhost');
     }
 
     public function from($email, $name = null)
