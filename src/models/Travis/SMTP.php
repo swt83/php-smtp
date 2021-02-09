@@ -203,7 +203,7 @@ class SMTP {
             if ($this->code() !== 220) return false;
 
             // enable crypto
-            stream_socket_enable_crypto($this->connection, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+            stream_socket_enable_crypto($this->connection, true, STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT); // use v1.2
 
             // request
             $this->request(($this->auth ? 'EHLO' : 'HELO').' '.$this->localhost.$this->newline);
